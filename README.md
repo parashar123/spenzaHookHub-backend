@@ -75,3 +75,30 @@ PORT=3000
 6. npm run start
 
 Backend server will be available at: http://localhost:3000
+
+1. Authentication
+
+POST
+/auth/register(registers a new user)
+
+POST
+/auth/login(login & get JWT token)
+
+2. Webhooks
+
+POST
+/webhooks/subscribe(subscribes to a webhook)
+
+GET
+/webhooks(list all webhooks)
+
+DELETE
+/webhooks/:id(cancels a webhook subscription)
+
+POST
+/webhooks/events(handles incoming webhook events)
+
+3. WebSockets
+Event: webhookUpdate (this keyword is emmitted and it sends real-time webhook event updates to connected clients.)
+
+I have handled it gracefully in the frontend for simulation.
