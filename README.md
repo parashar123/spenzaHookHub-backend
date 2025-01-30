@@ -24,76 +24,54 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+It's a Node.js-based webhook subscription and processing system which isbuilt using NestJS for the backend. It allows users to:
+-register
+-login
+-subscribe to webhooks from different sources.
+-securely process incoming webhook events.
+-show the webhook list and manage webhook subscriptions.
+-added retry failed webhook deliveries.
+-view realtime logs of incoming events using WebSockets.
+
+
+Used following stuffs:
+-jwt-based authentication (Register & Login)
+-webhook subscription management (Create, List, Delete)
+-webhook event processing with retries (via RabbitMQ)
+-secure webhook signing and verification (HMAC SHA-256)
+-webSockets for real-time webhook event logs
+-database storage with MongoDB (Mongoose)
 
 ## Project setup
+Prerequisites:
+-Node.js (>= 16.x)
+-MongoDB (Local or Cloud: MongoDB Atlas)
+-RabbitMQ (for handling webhook events asynchronously)
+-Docker
 
+**I would suggest to have Docker desktop and use all the required images like mongodb, rabbitmq etc
+
+If you don't have RabbitMQ installed, you can run it using Docker:
 ```bash
-$ npm install
+docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:management
 ```
 
 ## Compile and run the project
+Backend Setup (NestJS)
+
+1. Clone Repository
+2. git clone <my repo>
+3. cd backend
+4. npm install
+5. Create a .env file in the backend directory and add the below stuffs:
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+MONGO_URI=mongodb://localhost:27017/webhookDB
+JWT_SECRET=mySecretKey
+WEBHOOK_SECRET=myWebhookSecret
+RABBITMQ_URL=amqp://guest:guest@localhost:5672
+PORT=3000
 ```
+6. npm run start
 
-## Run tests
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+Backend server will be available at: http://localhost:3000
