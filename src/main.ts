@@ -10,9 +10,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.enableCors({
-    origin: '*', // Allow all origins
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Allowed methods
-    credentials: true, // Allow credentials (if needed)
+    origin: '*',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
 });
 
 app.connectMicroservice<MicroserviceOptions>({
@@ -24,10 +24,10 @@ app.connectMicroservice<MicroserviceOptions>({
   },
 });
 
-await app.startAllMicroservices(); // ✅ Start listening for messages
+await app.startAllMicroservices();
 await app.listen(3000);
 
-console.log(`🚀 Application is running on: ${await app.getUrl()}`);
+console.log(`Application is running on: ${await app.getUrl()}`);
 }
 
 bootstrap();

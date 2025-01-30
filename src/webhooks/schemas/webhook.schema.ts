@@ -1,4 +1,3 @@
-// src/webhooks/schemas/webhook.schema.ts
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
@@ -13,7 +12,7 @@ export class Webhook extends Document {
     @Prop({ default: true })
     isActive: boolean;
 
-    @Prop({ type: Object }) // Explicitly define as a key-value object
+    @Prop({ type: Object })
     authHeaders: Record<string, string>;
 }
 

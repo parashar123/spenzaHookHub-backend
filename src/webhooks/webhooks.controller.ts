@@ -1,4 +1,3 @@
-// src/webhooks/webhooks.controller.ts
 import { Controller, Post, Get, Delete, Body, Param, UseGuards } from '@nestjs/common';
 import { WebhooksService } from './webhooks.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
@@ -25,7 +24,7 @@ export class WebhooksController {
     }
 
     @Post('events')
-async handleEvent(@Body() event: any) {
+    async handleEvent(@Body() event: any) {
     const { webhookId } = event;
 
     if (!webhookId) {
@@ -36,6 +35,6 @@ async handleEvent(@Body() event: any) {
     console.log('Webhook ID received:', webhookId);
 
     return this.webhooksService.processEventWithRetry(event, webhookId);
-}
+    }
 
 }

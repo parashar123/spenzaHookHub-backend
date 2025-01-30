@@ -12,7 +12,7 @@ export class WebhookConsumerService implements OnModuleInit {
         this.client = ClientProxyFactory.create({
             transport: Transport.RMQ,
             options: {
-                urls: ['amqp://guest:guest@localhost:5672'], // ✅ RabbitMQ in Docker
+                urls: ['amqp://guest:guest@localhost:5672'],
                 queue: 'webhook_queue',
                 queueOptions: { durable: false },
             },
@@ -20,15 +20,14 @@ export class WebhookConsumerService implements OnModuleInit {
     }
 
     async onModuleInit() {
-        this.logger.log('📡 Connecting to RabbitMQ...');
+        this.logger.log('Connecting to RabbitMQ...');
         await this.client.connect();
-        this.logger.log('✅ Connected to RabbitMQ! Waiting for events...');
+        this.logger.log('Connected to RabbitMQ! Waiting for events...');
     }
 
-    // ✅ Fix the Consumer
     @MessagePattern('webhook_event') 
     async handleEvent(data: any) {
-        this.logger.log('🔔 Received event:', data);
+        this.logger.log('Received event:', data);
         const { event, webhookId, retryCount } = data;
         await this.sendWebhook(event, webhookId, retryCount);
     }
@@ -47,19 +46,19 @@ export class WebhookConsumerService implements OnModuleInit {
             const signature = crypto.createHmac('sha256', SECRET).update(rawPayload).digest('hex');
             headers['X-Hub-Signature'] = `sha256=${signature}`;
 
-            console.log(`📩 Sending event to: ${event.callbackUrl}`);
+            console.log(`Sending event to: ${event.callbackUrl}`);
             const response = await axios.post(event.callbackUrl, rawPayload, { headers });
 
-            this.logger.log(`✅ Webhook delivered successfully: ${response.status}`);
+            this.logger.log(`Webhook delivered successfully: ${response.status}`);
 
         } catch (error) {
-            this.logger.error(`❌ Failed to send webhook: ${error.message}`);
+            this.logger.error(`Failed to send webhook: ${error.message}`);
 
             if (retryCount < MAX_RETRIES) {
-                this.logger.log(`🔁 Retrying event... (Attempt ${retryCount + 1}/${MAX_RETRIES})`);
+                this.logger.log(`Retrying event... (Attempt ${retryCount + 1}/${MAX_RETRIES})`);
                 this.client.emit('webhook_event', { event, webhookId, retryCount: retryCount + 1 });
             } else {
-                this.logger.error('🚨 Max retry attempts reached. Webhook failed.');
+                this.logger.error('Max retry attempts reached. Webhook failed.');
             }
         }
     }

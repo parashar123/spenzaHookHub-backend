@@ -1,4 +1,3 @@
-// src/webhooks/webhooks.module.ts
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { WebhooksService } from './webhooks.service';

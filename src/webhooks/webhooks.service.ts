@@ -1,4 +1,3 @@
-// src/webhooks/webhooks.service.ts
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -19,12 +18,12 @@ export class WebhooksService {
     constructor(@InjectModel(Webhook.name) private webhookModel: Model<Webhook>, private readonly gateway: WebhooksGateway) {this.client = ClientProxyFactory.create({
         transport: Transport.RMQ,
         options: {
-            urls: ['amqp://guest:guest@localhost:5672'], // ✅ RabbitMQ running in Docker
+            urls: ['amqp://guest:guest@localhost:5672'],
             queue: 'webhook_queue',
             queueOptions: { durable: false },
             socketOptions: {
-                heartbeatIntervalInSeconds: 30, // 🔥 Increase heartbeat to prevent timeouts
-                reconnectTimeInSeconds: 5, // 🔁 Auto-reconnect every 5s if disconnected
+                heartbeatIntervalInSeconds: 30,
+                reconnectTimeInSeconds: 5,
             },
         },
     });
@@ -32,13 +31,12 @@ export class WebhooksService {
 
     async subscribe(data: { sourceUrl: string; callbackUrl: string; authHeaders?: Record<string, string> }) {
         const webhook = new this.webhookModel({
-            sourceUrl: data.sourceUrl, // Include sourceUrl
+            sourceUrl: data.sourceUrl,
             callbackUrl: data.callbackUrl,
             authHeaders: data.authHeaders || {},
         });
         const savedWebhook = await webhook.save();
-    
-        // Emit update to all clients
+
         this.gateway.sendUpdate(savedWebhook);
     
         return savedWebhook;
@@ -56,11 +54,11 @@ export class WebhooksService {
         throw new NotFoundException(`Webhook with id ${id} not found`);
     }
     await webhook.deleteOne();
-}
+    }
 
-async processEventWithRetry(event: any, webhookId: string, retryCount = 0) {
+    async processEventWithRetry(event: any, webhookId: string, retryCount = 0) {
     const MAX_RETRIES = 3;
-    const SECRET = process.env.WEBHOOK_SECRET || 'fallback-secret'; // ✅ Ensure .env is loaded
+    const SECRET = process.env.WEBHOOK_SECRET || 'fallback-secret';
 
     try {
         const webhook = await this.webhookModel.findById(webhookId);
@@ -71,20 +69,17 @@ async processEventWithRetry(event: any, webhookId: string, retryCount = 0) {
             ...webhook.authHeaders
         };
 
-        // 🔐 Ensure raw JSON format (no spaces)
         const rawPayload = JSON.stringify(event);
 
-        // 🔐 Generate HMAC Signature
         const signature = crypto.createHmac('sha256', SECRET).update(rawPayload).digest('hex');
         headers['X-Hub-Signature'] = `sha256=${signature}`;
 
-        console.log(`📩 Publishing event to RabbitMQ for retry handling: ${JSON.stringify(event)}`);
+        console.log(`Publishing event to RabbitMQ for retry handling: ${JSON.stringify(event)}`);
 
-        // ✅ Publish the event to RabbitMQ instead of processing immediately
         this.client.emit('webhook_event', { event, webhookId, retryCount });
 
     } catch (error) {
-        this.logger.error(`❌ Failed to publish event to RabbitMQ: ${error.message}`);
+        this.logger.error(`Failed to publish event to RabbitMQ: ${error.message}`);
 
         if (retryCount < MAX_RETRIES) {
             setTimeout(() => {

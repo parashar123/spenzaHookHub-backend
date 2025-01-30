@@ -10,11 +10,12 @@ import { Server } from 'socket.io';
 
 @WebSocketGateway({
     cors: {
-        origin: '*', // ✅ Allow all origins (update for production)
+        origin: '*',
         methods: ['GET', 'POST'],
         credentials: true,
     },
 })
+
 export class WebhooksGateway implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect {
     @WebSocketServer() server: Server;
     private logger = new Logger('WebhooksGateway');
