@@ -74,6 +74,14 @@ PORT=3000
 ```
 6. npm run start
 
+
+(major dependencies : ```bash npm install @nestjs/mongoose mongoose
+npm install @nestjs/jwt @nestjs/passport passport passport-jwt bcryptjs
+npm install amqplib
+npm install class-validator class-transformer
+npm install axios
+npm install dotenv```)
+
 Backend server will be available at: http://localhost:3000
 
 1. Authentication
