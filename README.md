@@ -25,29 +25,29 @@
 ## Description
 
 It's a Node.js-based webhook subscription and processing system which isbuilt using NestJS for the backend. It allows users to:
--register
--login
--subscribe to webhooks from different sources.
--securely process incoming webhook events.
--show the webhook list and manage webhook subscriptions.
--added retry failed webhook deliveries.
--view realtime logs of incoming events using WebSockets.
+1. register
+2. login
+3. subscribe to webhooks from different sources.
+4. securely process incoming webhook events.
+5. show the webhook list and manage webhook subscriptions.
+6. added retry failed webhook deliveries.
+7. view realtime logs of incoming events using WebSockets.
 
 
 Used following stuffs:
--jwt-based authentication (Register & Login)
--webhook subscription management (Create, List, Delete)
--webhook event processing with retries (via RabbitMQ)
--secure webhook signing and verification (HMAC SHA-256)
--webSockets for real-time webhook event logs
--database storage with MongoDB (Mongoose)
+1. jwt-based authentication (Register & Login)
+2. webhook subscription management (Create, List, Delete)
+3. webhook event processing with retries (via RabbitMQ)
+4. secure webhook signing and verification (HMAC SHA-256)
+5. webSockets for real-time webhook event logs
+6. database storage with MongoDB (Mongoose)
 
 ## Project setup
 Prerequisites:
--Node.js (>= 16.x)
--MongoDB (Local or Cloud: MongoDB Atlas)
--RabbitMQ (for handling webhook events asynchronously)
--Docker
+1. Node.js (>= 16.x)
+2. MongoDB (Local or Cloud: MongoDB Atlas)
+3. RabbitMQ (for handling webhook events asynchronously)
+4. Docker
 
 **I would suggest to have Docker desktop and use all the required images like mongodb, rabbitmq etc
 
