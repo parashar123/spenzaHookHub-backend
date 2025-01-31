@@ -33,6 +33,8 @@ It's a Node.js-based webhook subscription and processing system which isbuilt us
 6. added retry failed webhook deliveries.
 7. view realtime logs of incoming events using WebSockets.
 
+** one needs to run simulate_webhook.js by updating token, sourceUrl and secret key. these can be obtained after executing subscribe api.
+
 
 Used following stuffs:
 1. jwt-based authentication (Register & Login)
