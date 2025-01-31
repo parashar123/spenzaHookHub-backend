@@ -26,8 +26,14 @@ export class AuthService {
         return null;
     }
 
-    async login(user: User): Promise<{ token: string }> {
-        const payload = { username: user.username, sub: user._id };
-        return { token: this.jwtService.sign(payload) };
-    }
+    async login(username: string, password: string) {
+        const user = await this.userModel.findOne({ username });
+        if (!user) throw new Error('User not found');
+    
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) throw new Error('Invalid credentials');
+    
+        const token = this.jwtService.sign({ username: user.username });
+        return { token };
+      }
 }

@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
 import { WebhooksModule } from './webhooks/webhooks.module';
+import { RabbitMQService } from './rabbitmq/rabbitmq.service';
 
 @Module({
     imports: [
@@ -9,5 +10,7 @@ import { WebhooksModule } from './webhooks/webhooks.module';
         AuthModule,
         WebhooksModule,
     ],
+    providers: [RabbitMQService],
+
 })
 export class AppModule {}
